@@ -6,7 +6,63 @@
     <title>BuyCycle | Premium Bicycle Components & Accessories</title>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body>
+<body data-authenticated="false">
+    <div class="auth-gate" data-auth-gate>
+        <div class="auth-gate-card" role="dialog" aria-labelledby="authGateHeading" aria-modal="true">
+            <div class="auth-gate-branding">
+                <span class="auth-logo">BuyCycle</span>
+                <p class="auth-tagline">Premium bicycle gear for every ride.</p>
+            </div>
+            <div class="auth-gate-header">
+                <h1 id="authGateHeading">Sign in to continue</h1>
+                <p>Access your personalized shop, wishlists, and track your orders.</p>
+                <div class="auth-gate-tabs" role="tablist">
+                    <button type="button" class="auth-gate-tab active" role="tab" aria-selected="true" data-gate-tab="signin">Log in</button>
+                    <button type="button" class="auth-gate-tab" role="tab" aria-selected="false" data-gate-tab="signup">Sign up</button>
+                </div>
+            </div>
+            <form class="auth-gate-form active" data-gate-form="signin" aria-label="Log in">
+                <div class="gate-field">
+                    <label for="gateLoginEmail">Email</label>
+                    <input id="gateLoginEmail" name="email" type="email" placeholder="you@example.com" required>
+                </div>
+                <div class="gate-field">
+                    <label for="gateLoginPassword">Password</label>
+                    <input id="gateLoginPassword" name="password" type="password" placeholder="Enter password" required>
+                </div>
+                <div class="gate-field optional">
+                    <label for="gateLoginPhone">Mobile number (optional)</label>
+                    <input id="gateLoginPhone" name="phone" type="tel" inputmode="tel" placeholder="09XX XXX XXXX">
+                </div>
+                <button class="auth-gate-submit" type="submit">Continue</button>
+                <p class="auth-gate-hint">Forgot your password? <a href="#">Reset it</a>.</p>
+            </form>
+            <form class="auth-gate-form" data-gate-form="signup" aria-label="Sign up">
+                <div class="gate-field">
+                    <label for="gateSignupName">Full name</label>
+                    <input id="gateSignupName" name="name" type="text" placeholder="Juan Dela Cruz" required>
+                </div>
+                <div class="gate-field">
+                    <label for="gateSignupEmail">Email</label>
+                    <input id="gateSignupEmail" name="email" type="email" placeholder="you@example.com" required>
+                </div>
+                <div class="gate-field">
+                    <label for="gateSignupPhone">Mobile number</label>
+                    <input id="gateSignupPhone" name="phone" type="tel" inputmode="tel" placeholder="09XX XXX XXXX" required>
+                </div>
+                <div class="gate-field">
+                    <label for="gateSignupPassword">Password</label>
+                    <input id="gateSignupPassword" name="password" type="password" placeholder="Create password" minlength="6" required>
+                </div>
+                <div class="gate-field">
+                    <label for="gateSignupConfirm">Confirm password</label>
+                    <input id="gateSignupConfirm" name="confirm" type="password" placeholder="Repeat password" minlength="6" required>
+                </div>
+                <button class="auth-gate-submit" type="submit">Create account</button>
+                <p class="auth-gate-hint">By joining, you agree to our <a href="#">terms</a> and <a href="#">privacy policy</a>.</p>
+            </form>
+        </div>
+    </div>
     <header class="site-header">
         <div class="branding">
             <span class="logo">BuyCycle</span>
@@ -18,7 +74,19 @@
             <a href="#about">About</a>
             <a href="#contact">Contact</a>
         </nav>
-        <button class="cart-toggle" aria-label="Open cart" data-cart-toggle><span>Cart</span><span class="badge" data-cart-count>0</span></button>
+        <div class="header-actions">
+            <div class="account-menu" data-account-menu>
+                <button class="account-toggle" type="button" aria-haspopup="true" aria-expanded="false" data-account-toggle>
+                    <span data-account-label>Account</span>
+                    <span class="chevron" aria-hidden="true">▾</span>
+                </button>
+                <div class="account-dropdown" role="menu" data-account-dropdown>
+                    <button type="button" role="menuitem" data-account-action="logout">Log out</button>
+                    <button type="button" role="menuitem" data-account-action="switch">Switch account</button>
+                </div>
+            </div>
+            <button class="cart-toggle" aria-label="Open cart" data-cart-toggle><span>Cart</span><span class="badge" data-cart-count>0</span></button>
+        </div>
     </header>
 
     <main>

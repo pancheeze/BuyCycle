@@ -1,102 +1,132 @@
 [
   {
-    "id": "bc-001",
-    "name": "AeroPro Carbon Wheelset",
-    "price": 1299.99,
-    "category": "Components",
-    "brand": "AeroPro",
+    "id": "drv-001",
+    "name": "Shimano Ultegra R8000 Crankset",
+    "price": 289.99,
+    "category": "Drivetrain",
+    "brand": "Shimano",
     "rating": 4.8,
-    "image": "https://images.unsplash.com/photo-1487139975590-b4f1dce9b035?auto=format&fit=crop&w=900&q=80",
-    "description": "Lightweight 45mm carbon rims optimized for all-weather performance."
+    "image": "https://images.unsplash.com/photo-1525104698733-6ecfbfbaf2df?auto=format&fit=crop&w=900&q=80",
+    "description": "Hollowtech II 52/36T crankset that balances stiffness and lightweight efficiency for road riding."
   },
   {
-    "id": "bc-002",
-    "name": "TrailMaster Suspension Fork",
-    "price": 749.5,
-    "category": "Components",
-    "brand": "TrailMaster",
-    "rating": 4.6,
-    "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=900&q=80",
-    "description": "140mm travel with adjustable rebound ideal for aggressive trail riding."
-  },
-  {
-    "id": "bc-003",
-    "name": "Summit Elite Helmet",
-    "price": 189.99,
-    "category": "Accessories",
-    "brand": "Summit",
-    "rating": 4.9,
-    "image": "https://images.unsplash.com/photo-1542293787938-4d2226afd5c0?auto=format&fit=crop&w=900&q=80",
-    "description": "Breathable MIPS helmet with magnetic buckle and integrated rear light."
-  },
-  {
-    "id": "bc-004",
-    "name": "RideEase Performance Saddle",
-    "price": 129,
-    "category": "Components",
-    "brand": "RideEase",
-    "rating": 4.4,
-    "image": "https://images.unsplash.com/photo-1541625602330-2277a4c46182?auto=format&fit=crop&w=900&q=80",
-    "description": "Ergonomic cutout saddle designed to reduce pressure on long rides."
-  },
-  {
-    "id": "bc-005",
-    "name": "Tempo Precision Cycling Shoes",
-    "price": 259.99,
-    "category": "Apparel",
-    "brand": "Tempo",
+    "id": "drv-002",
+    "name": "SRAM GX Eagle 12-Speed Cassette",
+    "price": 229.0,
+    "category": "Drivetrain",
+    "brand": "SRAM",
     "rating": 4.7,
-    "image": "https://images.unsplash.com/photo-1577640962370-3a77c07a9d83?auto=format&fit=crop&w=900&q=80",
-    "description": "Dual BOA dial closure for tailored fit and stiff carbon-reinforced sole."
+    "image": "https://images.unsplash.com/photo-1518292583750-f0b6f86f77cd?auto=format&fit=crop&w=900&q=80",
+    "description": "10-52T cassette with full XD driver compatibility and wide-range gearing for trail bikes."
   },
   {
-    "id": "bc-006",
-    "name": "GlowRide Smart Light Set",
-    "price": 89.5,
-    "category": "Accessories",
-    "brand": "GlowRide",
-    "rating": 4.5,
-    "image": "https://images.unsplash.com/photo-1532292060982-8bfb98680891?auto=format&fit=crop&w=900&q=80",
-    "description": "USB-rechargeable front and rear lights with adaptive brightness sensors."
+    "id": "wls-001",
+    "name": "DT Swiss ERC 1400 Dicut Wheelset",
+    "price": 1899.99,
+    "category": "Wheelsets",
+    "brand": "DT Swiss",
+    "rating": 4.9,
+    "image": "https://images.unsplash.com/photo-1605719124117-0406238b5994?auto=format&fit=crop&w=900&q=80",
+    "description": "Tubeless-ready carbon wheels with 45 mm rims designed for fast endurance rides and crosswinds."
   },
   {
-    "id": "bc-007",
-    "name": "ClimbPro Multi-Tool Kit",
-    "price": 59.99,
-    "category": "Accessories",
-    "brand": "ClimbPro",
-    "rating": 4.3,
-    "image": "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=900&q=80",
-    "description": "18-function stainless multi-tool with tubeless repair plugs."
-  },
-  {
-    "id": "bc-008",
-    "name": "HydroFlow Endurance Bottle",
-    "price": 24,
-    "category": "Accessories",
-    "brand": "HydroFlow",
-    "rating": 4.2,
-    "image": "https://images.unsplash.com/photo-1459257868276-5e65389e2722?auto=format&fit=crop&w=900&q=80",
-    "description": "Insulated bottle keeps drinks cold up to 4 hours with quick-squeeze valve."
-  },
-  {
-    "id": "bc-009",
-    "name": "PulseSync Heart Rate Monitor",
-    "price": 129.99,
-    "category": "Accessories",
-    "brand": "PulseSync",
-    "rating": 4.1,
-    "image": "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=900&q=80",
-    "description": "ANT+/Bluetooth heart rate sensor compatible with major cycling computers."
-  },
-  {
-    "id": "bc-010",
-    "name": "Element Windproof Jacket",
-    "price": 139.5,
-    "category": "Apparel",
-    "brand": "Element",
+    "id": "brk-001",
+    "name": "SRAM G2 RSC Disc Brake Set",
+    "price": 289.5,
+    "category": "Brakes",
+    "brand": "SRAM",
     "rating": 4.6,
-    "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80",
-    "description": "Packable windproof shell with reflective accents and breathable panels."
+    "image": "https://images.unsplash.com/photo-1517840545246-b491010a9e11?auto=format&fit=crop&w=900&q=80",
+    "description": "Four-piston trail brakes featuring contact point adjustment and SwingLink lever feel."
+  },
+  {
+    "id": "sus-001",
+    "name": "Fox Factory 34 Step-Cast Fork",
+    "price": 969.0,
+    "category": "Suspension",
+    "brand": "Fox",
+    "rating": 4.9,
+    "image": "https://images.unsplash.com/photo-1541544741938-0af808871cc1?auto=format&fit=crop&w=900&q=80",
+    "description": "120 mm travel XC fork with FIT4 damper, Kashima coating, and lightweight Step-Cast chassis."
+  },
+  {
+    "id": "sat-001",
+    "name": "Specialized Power Expert Saddle",
+    "price": 159.99,
+    "category": "Contact Points",
+    "brand": "Specialized",
+    "rating": 4.5,
+    "image": "https://images.unsplash.com/photo-1595433707802-8f4b64d45e85?auto=format&fit=crop&w=900&q=80",
+    "description": "Short-nose saddle with Body Geometry cutout to support aggressive road and gravel positions."
+  },
+  {
+    "id": "lit-001",
+    "name": "Bontrager Ion Elite R Front Light",
+    "price": 119.99,
+    "category": "Lighting",
+    "brand": "Bontrager",
+    "rating": 4.4,
+    "image": "https://images.unsplash.com/photo-1517003211561-e9f26837fef0?auto=format&fit=crop&w=900&q=80",
+    "description": "1000-lumen USB-C rechargeable light with Daytime Running Mode for city commuting."
+  },
+  {
+    "id": "ele-001",
+    "name": "Garmin Edge 840 Solar",
+    "price": 549.99,
+    "category": "Electronics",
+    "brand": "Garmin",
+    "rating": 4.8,
+    "image": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80",
+    "description": "Performance GPS computer with solar charging, ClimbPro, and multi-band GNSS accuracy."
+  },
+  {
+    "id": "tls-001",
+    "name": "Park Tool AK-5 Advanced Mechanic Toolkit",
+    "price": 319.95,
+    "category": "Tools",
+    "brand": "Park Tool",
+    "rating": 4.9,
+    "image": "https://images.unsplash.com/photo-1595435905940-c6ef1debd5a5?auto=format&fit=crop&w=900&q=80",
+    "description": "A 40-piece kit covering essential shop-quality tools for drivetrain, wheel, and brake service."
+  },
+  {
+    "id": "app-001",
+    "name": "Rapha Core Cycling Jersey",
+    "price": 95.0,
+    "category": "Apparel",
+    "brand": "Rapha",
+    "rating": 4.7,
+    "image": "https://images.unsplash.com/photo-1518655048521-f130df041f66?auto=format&fit=crop&w=900&q=80",
+    "description": "Breathable jersey with twin stripe detailing, optimized for everyday training miles."
+  },
+  {
+    "id": "acc-001",
+    "name": "CamelBak Podium Chill 21oz Bottle",
+    "price": 16.0,
+    "category": "Accessories",
+    "brand": "CamelBak",
+    "rating": 4.3,
+    "image": "https://images.unsplash.com/photo-1600181952022-2bd5ead43a6c?auto=format&fit=crop&w=900&q=80",
+    "description": "Double-wall insulated cycling bottle with high-flow Jet Valve and secure lockout."
+  },
+  {
+    "id": "tyr-001",
+    "name": "Maxxis Minion DHF 29x2.5 WT Tire",
+    "price": 77.99,
+    "category": "Tires",
+    "brand": "Maxxis",
+    "rating": 4.8,
+    "image": "https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=900&q=80",
+    "description": "3C MaxxTerra compound tire with EXO protection for confident enduro and trail grip."
+  },
+  {
+    "id": "prn-001",
+    "name": "Elite Direto XR-T Smart Trainer",
+    "price": 999.0,
+    "category": "Training",
+    "brand": "Elite",
+    "rating": 4.6,
+    "image": "https://images.unsplash.com/photo-1595433562696-19f5c4f0b264?auto=format&fit=crop&w=900&q=80",
+    "description": "Direct-drive smart trainer with ±1.5% accuracy and 2300-watt sprint resistance for indoor sessions."
   }
 ]
