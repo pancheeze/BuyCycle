@@ -1,0 +1,102 @@
+[
+  {
+    "id": "bc-001",
+    "name": "AeroPro Carbon Wheelset",
+    "price": 1299.99,
+    "category": "Components",
+    "brand": "AeroPro",
+    "rating": 4.8,
+    "image": "https://images.unsplash.com/photo-1487139975590-b4f1dce9b035?auto=format&fit=crop&w=900&q=80",
+    "description": "Lightweight 45mm carbon rims optimized for all-weather performance."
+  },
+  {
+    "id": "bc-002",
+    "name": "TrailMaster Suspension Fork",
+    "price": 749.5,
+    "category": "Components",
+    "brand": "TrailMaster",
+    "rating": 4.6,
+    "image": "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=900&q=80",
+    "description": "140mm travel with adjustable rebound ideal for aggressive trail riding."
+  },
+  {
+    "id": "bc-003",
+    "name": "Summit Elite Helmet",
+    "price": 189.99,
+    "category": "Accessories",
+    "brand": "Summit",
+    "rating": 4.9,
+    "image": "https://images.unsplash.com/photo-1542293787938-4d2226afd5c0?auto=format&fit=crop&w=900&q=80",
+    "description": "Breathable MIPS helmet with magnetic buckle and integrated rear light."
+  },
+  {
+    "id": "bc-004",
+    "name": "RideEase Performance Saddle",
+    "price": 129,
+    "category": "Components",
+    "brand": "RideEase",
+    "rating": 4.4,
+    "image": "https://images.unsplash.com/photo-1541625602330-2277a4c46182?auto=format&fit=crop&w=900&q=80",
+    "description": "Ergonomic cutout saddle designed to reduce pressure on long rides."
+  },
+  {
+    "id": "bc-005",
+    "name": "Tempo Precision Cycling Shoes",
+    "price": 259.99,
+    "category": "Apparel",
+    "brand": "Tempo",
+    "rating": 4.7,
+    "image": "https://images.unsplash.com/photo-1577640962370-3a77c07a9d83?auto=format&fit=crop&w=900&q=80",
+    "description": "Dual BOA dial closure for tailored fit and stiff carbon-reinforced sole."
+  },
+  {
+    "id": "bc-006",
+    "name": "GlowRide Smart Light Set",
+    "price": 89.5,
+    "category": "Accessories",
+    "brand": "GlowRide",
+    "rating": 4.5,
+    "image": "https://images.unsplash.com/photo-1532292060982-8bfb98680891?auto=format&fit=crop&w=900&q=80",
+    "description": "USB-rechargeable front and rear lights with adaptive brightness sensors."
+  },
+  {
+    "id": "bc-007",
+    "name": "ClimbPro Multi-Tool Kit",
+    "price": 59.99,
+    "category": "Accessories",
+    "brand": "ClimbPro",
+    "rating": 4.3,
+    "image": "https://images.unsplash.com/photo-1509395176047-4a66953fd231?auto=format&fit=crop&w=900&q=80",
+    "description": "18-function stainless multi-tool with tubeless repair plugs."
+  },
+  {
+    "id": "bc-008",
+    "name": "HydroFlow Endurance Bottle",
+    "price": 24,
+    "category": "Accessories",
+    "brand": "HydroFlow",
+    "rating": 4.2,
+    "image": "https://images.unsplash.com/photo-1459257868276-5e65389e2722?auto=format&fit=crop&w=900&q=80",
+    "description": "Insulated bottle keeps drinks cold up to 4 hours with quick-squeeze valve."
+  },
+  {
+    "id": "bc-009",
+    "name": "PulseSync Heart Rate Monitor",
+    "price": 129.99,
+    "category": "Accessories",
+    "brand": "PulseSync",
+    "rating": 4.1,
+    "image": "https://images.unsplash.com/photo-1545239351-1141bd82e8a6?auto=format&fit=crop&w=900&q=80",
+    "description": "ANT+/Bluetooth heart rate sensor compatible with major cycling computers."
+  },
+  {
+    "id": "bc-010",
+    "name": "Element Windproof Jacket",
+    "price": 139.5,
+    "category": "Apparel",
+    "brand": "Element",
+    "rating": 4.6,
+    "image": "https://images.unsplash.com/photo-1501785888041-af3ef285b470?auto=format&fit=crop&w=900&q=80",
+    "description": "Packable windproof shell with reflective accents and breathable panels."
+  }
+]

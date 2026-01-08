@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BuyCycle | Premium Bicycle Components & Accessories</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="branding">
+            <span class="logo">BuyCycle</span>
+            <span class="tagline">Ride better, ride smarter.</span>
+        </div>
+        <nav class="primary-nav" aria-label="Primary">
+            <a href="#shop">Shop</a>
+            <a href="#categories">Categories</a>
+            <a href="#about">About</a>
+            <a href="#contact">Contact</a>
+        </nav>
+        <button class="cart-toggle" aria-label="Open cart" data-cart-toggle><span>Cart</span><span class="badge" data-cart-count>0</span></button>
+    </header>
+
+    <main>
+        <section class="hero" id="home">
+            <div class="hero-content">
+                <h1>Discover High-Performance Bicycle Gear</h1>
+                <p>Curated components, accessories, and apparel built for casual riders and road warriors alike.</p>
+                <a class="cta" href="#shop">Shop the collection</a>
+            </div>
+            <div class="hero-media" role="presentation"></div>
+        </section>
+
+        <section class="categories" id="categories" aria-labelledby="categories-heading">
+            <h2 id="categories-heading">Shop By Category</h2>
+            <div class="category-grid" data-category-grid></div>
+        </section>
+
+        <section class="product-gallery" id="shop" aria-labelledby="products-heading">
+            <div class="gallery-header">
+                <h2 id="products-heading">Featured Products</h2>
+                <div class="filters">
+                    <label for="categoryFilter">Category</label>
+                    <select id="categoryFilter" data-filter-category>
+                        <option value="all">All</option>
+                    </select>
+                    <label for="searchInput" class="visually-hidden">Search</label>
+                    <input id="searchInput" type="search" placeholder="Search gear" data-filter-search>
+                </div>
+            </div>
+            <div class="product-grid" data-product-grid></div>
+            <p class="empty-state" data-empty-state hidden>No products match your filters. Try adjusting your search.</p>
+        </section>
+
+        <section class="value-props" aria-label="Why shop with BuyCycle?">
+            <article>
+                <h3>Expertly Curated</h3>
+                <p>Every product in our catalog is handpicked by cycling specialists to ensure durability and performance.</p>
+            </article>
+            <article>
+                <h3>Fast Shipping</h3>
+                <p>Get your gear quickly with tracked delivery and hassle-free returns on every order.</p>
+            </article>
+            <article>
+                <h3>Rider Support</h3>
+                <p>Questions about fit or compatibility? Our team of riders provides personalized recommendations.</p>
+            </article>
+        </section>
+
+        <section class="about" id="about">
+            <h2>About BuyCycle</h2>
+            <p>BuyCycle is an enthusiast-run marketplace delivering premium bicycle components and accessories. We focus on authentic products sourced from trusted manufacturers so riders can upgrade with confidence.</p>
+        </section>
+
+        <section class="contact" id="contact">
+            <h2>Stay in the Loop</h2>
+            <form class="newsletter" data-newsletter-form>
+                <label for="emailInput" class="visually-hidden">Email</label>
+                <input id="emailInput" type="email" name="email" placeholder="Enter your email" required>
+                <button type="submit">Subscribe</button>
+            </form>
+            <p class="disclaimer">By subscribing, you agree to receive BuyCycle updates. You can unsubscribe at any time.</p>
+        </section>
+    </main>
+
+    <aside class="cart" data-cart-panel aria-hidden="true" aria-labelledby="cart-heading" role="dialog">
+        <div class="cart-header">
+            <h2 id="cart-heading">Your Cart</h2>
+            <button class="cart-close" aria-label="Close cart" data-cart-toggle>&times;</button>
+        </div>
+        <div class="cart-body" data-cart-items>
+            <p class="cart-empty">Your cart is empty. Start shopping to add products.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total"><span>Total</span><span data-cart-total>$0.00</span></div>
+            <button class="checkout" type="button">Proceed to Checkout</button>
+            <p class="checkout-note">Secure payments powered by your preferred provider.</p>
+        </div>
+    </aside>
+
+    <div class="toast" data-toast role="status" aria-live="polite" hidden></div>
+
+    <footer class="site-footer">
+        <p>&copy; <span data-current-year></span> BuyCycle. All rights reserved.</p>
+    </footer>
+
+    <script src="assets/js/app.js" defer></script>
+</body>
+</html>
