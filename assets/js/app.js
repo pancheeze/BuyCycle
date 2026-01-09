@@ -1,6 +1,9 @@
 'use strict';
 
-const API_BASE_URL = document.body.dataset.apiBase || 'http://localhost:4000/api';
+const serverBootstrap = window.buycycleBootstrap || {};
+
+const rawApiBase = document.body.dataset.apiBase || '/api/public/index.php';
+const API_BASE_URL = rawApiBase.replace(/\/+$/, '') || '/api/public/index.php';
 const API_PATHS = {
     products: '/products',
     categories: '/products/categories',
@@ -14,156 +17,174 @@ const API_PATHS = {
 
 const FALLBACK_IMAGE = 'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?auto=format&fit=crop&w=900&q=80';
 
-const CATEGORY_CONFIG = [
-    { value: 'Drivetrain', label: 'Drivetrain', badge: 'DR' },
-    { value: 'Wheelsets', label: 'Wheelsets', badge: 'WH' },
-    { value: 'Brakes', label: 'Brakes', badge: 'BR' },
-    { value: 'Suspension', label: 'Suspension', badge: 'SU' },
-    { value: 'Contact Points', label: 'Contact Points', badge: 'CP' },
-    { value: 'Lighting', label: 'Lighting', badge: 'LG' },
-    { value: 'Electronics', label: 'Electronics', badge: 'EL' },
-    { value: 'Tools', label: 'Tools', badge: 'TL' },
-    { value: 'Apparel', label: 'Apparel', badge: 'AP' },
-    { value: 'Accessories', label: 'Accessories', badge: 'AC' },
-    { value: 'Tires', label: 'Tires', badge: 'TR' },
-    { value: 'Training', label: 'Training', badge: 'TN' }
-];
+const bootstrapCategories = Array.isArray(serverBootstrap.categories) ? serverBootstrap.categories : [];
+
+const CATEGORY_CONFIG = bootstrapCategories.length
+    ? bootstrapCategories.map(category => {
+        const value = category.value || category.category_id || category.id || 'Misc';
+        const label = category.label || category.name || value;
+        const badgeSeed = category.badge || value;
+        return {
+            value,
+            label,
+            badge: badgeSeed.slice(0, 2).toUpperCase(),
+            product_count: category.product_count || category.count || 0,
+            display_order: category.display_order || 0
+        };
+    })
+    : [
+        { value: 'Drivetrain', label: 'Drivetrain', badge: 'DR' },
+        { value: 'Wheelsets', label: 'Wheelsets', badge: 'WH' },
+        { value: 'Brakes', label: 'Brakes', badge: 'BR' },
+        { value: 'Suspension', label: 'Suspension', badge: 'SU' },
+        { value: 'Contact Points', label: 'Contact Points', badge: 'CP' },
+        { value: 'Lighting', label: 'Lighting', badge: 'LG' },
+        { value: 'Electronics', label: 'Electronics', badge: 'EL' },
+        { value: 'Tools', label: 'Tools', badge: 'TL' },
+        { value: 'Apparel', label: 'Apparel', badge: 'AP' },
+        { value: 'Accessories', label: 'Accessories', badge: 'AC' },
+        { value: 'Tires', label: 'Tires', badge: 'TR' },
+        { value: 'Training', label: 'Training', badge: 'TN' }
+    ];
 
 const AUTH_TOKEN_KEY = 'buycycle-auth-token';
 const SESSION_STORAGE_KEY = 'buycycle-session-id';
+const bootstrapProducts = Array.isArray(serverBootstrap.products) ? serverBootstrap.products : [];
 
-const fallbackProducts = [
-    {
-        id: 'drv-001',
-        name: 'Shimano Ultegra R8000 Crankset',
-        price: 289.99,
-        category: 'Drivetrain',
-        brand: 'Shimano',
-        rating: 4.8,
-        image: 'https://images.unsplash.com/photo-1525104698733-6ecfbfbaf2df?auto=format&fit=crop&w=900&q=80',
-        description: 'Hollowtech II 52/36T crankset that balances stiffness and lightweight efficiency for road riding.'
-    },
-    {
-        id: 'drv-002',
-        name: 'SRAM GX Eagle 12-Speed Cassette',
-        price: 229.0,
-        category: 'Drivetrain',
-        brand: 'SRAM',
-        rating: 4.7,
-        image: 'https://images.unsplash.com/photo-1518292583750-f0b6f86f77cd?auto=format&fit=crop&w=900&q=80',
-        description: '10-52T cassette with full XD driver compatibility and wide-range gearing for trail bikes.'
-    },
-    {
-        id: 'wls-001',
-        name: 'DT Swiss ERC 1400 Dicut Wheelset',
-        price: 1899.99,
-        category: 'Wheelsets',
-        brand: 'DT Swiss',
-        rating: 4.9,
-        image: 'https://images.unsplash.com/photo-1605719124117-0406238b5994?auto=format&fit=crop&w=900&q=80',
-        description: 'Tubeless-ready carbon wheels with 45 mm rims designed for fast endurance rides and crosswinds.'
-    },
-    {
-        id: 'brk-001',
-        name: 'SRAM G2 RSC Disc Brake Set',
-        price: 289.5,
-        category: 'Brakes',
-        brand: 'SRAM',
-        rating: 4.6,
-        image: 'https://images.unsplash.com/photo-1517840545246-b491010a9e11?auto=format&fit=crop&w=900&q=80',
-        description: 'Four-piston trail brakes featuring contact point adjustment and SwingLink lever feel.'
-    },
-    {
-        id: 'sus-001',
-        name: 'Fox Factory 34 Step-Cast Fork',
-        price: 969.0,
-        category: 'Suspension',
-        brand: 'Fox',
-        rating: 4.9,
-        image: 'https://images.unsplash.com/photo-1541544741938-0af808871cc1?auto=format&fit=crop&w=900&q=80',
-        description: '120 mm travel XC fork with FIT4 damper, Kashima coating, and lightweight Step-Cast chassis.'
-    },
-    {
-        id: 'sat-001',
-        name: 'Specialized Power Expert Saddle',
-        price: 159.99,
-        category: 'Contact Points',
-        brand: 'Specialized',
-        rating: 4.5,
-        image: 'https://images.unsplash.com/photo-1595433707802-8f4b64d45e85?auto=format&fit=crop&w=900&q=80',
-        description: 'Short-nose saddle with Body Geometry cutout to support aggressive road and gravel positions.'
-    },
-    {
-        id: 'lit-001',
-        name: 'Bontrager Ion Elite R Front Light',
-        price: 119.99,
-        category: 'Lighting',
-        brand: 'Bontrager',
-        rating: 4.4,
-        image: 'https://images.unsplash.com/photo-1517003211561-e9f26837fef0?auto=format&fit=crop&w=900&q=80',
-        description: '1000-lumen USB-C rechargeable light with Daytime Running Mode for city commuting.'
-    },
-    {
-        id: 'ele-001',
-        name: 'Garmin Edge 840 Solar',
-        price: 549.99,
-        category: 'Electronics',
-        brand: 'Garmin',
-        rating: 4.8,
-        image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80',
-        description: 'Performance GPS computer with solar charging, ClimbPro, and multi-band GNSS accuracy.'
-    },
-    {
-        id: 'tls-001',
-        name: 'Park Tool AK-5 Advanced Mechanic Toolkit',
-        price: 319.95,
-        category: 'Tools',
-        brand: 'Park Tool',
-        rating: 4.9,
-        image: 'https://images.unsplash.com/photo-1595435905940-c6ef1debd5a5?auto=format&fit=crop&w=900&q=80',
-        description: 'A 40-piece kit covering essential shop-quality tools for drivetrain, wheel, and brake service.'
-    },
-    {
-        id: 'app-001',
-        name: 'Rapha Core Cycling Jersey',
-        price: 95.0,
-        category: 'Apparel',
-        brand: 'Rapha',
-        rating: 4.7,
-        image: 'https://images.unsplash.com/photo-1518655048521-f130df041f66?auto=format&fit=crop&w=900&q=80',
-        description: 'Breathable jersey with twin stripe detailing, optimized for everyday training miles.'
-    },
-    {
-        id: 'acc-001',
-        name: 'CamelBak Podium Chill 21oz Bottle',
-        price: 16.0,
-        category: 'Accessories',
-        brand: 'CamelBak',
-        rating: 4.3,
-        image: 'https://images.unsplash.com/photo-1600181952022-2bd5ead43a6c?auto=format&fit=crop&w=900&q=80',
-        description: 'Double-wall insulated cycling bottle with high-flow Jet Valve and secure lockout.'
-    },
-    {
-        id: 'tyr-001',
-        name: 'Maxxis Minion DHF 29x2.5 WT Tire',
-        price: 77.99,
-        category: 'Tires',
-        brand: 'Maxxis',
-        rating: 4.8,
-        image: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=900&q=80',
-        description: '3C MaxxTerra compound tire with EXO protection for confident enduro and trail grip.'
-    },
-    {
-        id: 'prn-001',
-        name: 'Elite Direto XR-T Smart Trainer',
-        price: 999.0,
-        category: 'Training',
-        brand: 'Elite',
-        rating: 4.6,
-        image: 'https://images.unsplash.com/photo-1595433562696-19f5c4f0b264?auto=format&fit=crop&w=900&q=80',
-        description: 'Direct-drive smart trainer with ±1.5% accuracy and 2300-watt sprint resistance for indoor sessions.'
-    }
-];
+const fallbackProducts = bootstrapProducts.length
+    ? bootstrapProducts
+    : [
+        {
+            id: 'drv-001',
+            name: 'Shimano Ultegra R8000 Crankset',
+            price: 289.99,
+            category: 'Drivetrain',
+            brand: 'Shimano',
+            rating: 4.8,
+            image: 'https://images.unsplash.com/photo-1525104698733-6ecfbfbaf2df?auto=format&fit=crop&w=900&q=80',
+            description: 'Hollowtech II 52/36T crankset that balances stiffness and lightweight efficiency for road riding.'
+        },
+        {
+            id: 'drv-002',
+            name: 'SRAM GX Eagle 12-Speed Cassette',
+            price: 229.0,
+            category: 'Drivetrain',
+            brand: 'SRAM',
+            rating: 4.7,
+            image: 'https://images.unsplash.com/photo-1518292583750-f0b6f86f77cd?auto=format&fit=crop&w=900&q=80',
+            description: '10-52T cassette with full XD driver compatibility and wide-range gearing for trail bikes.'
+        },
+        {
+            id: 'wls-001',
+            name: 'DT Swiss ERC 1400 Dicut Wheelset',
+            price: 1899.99,
+            category: 'Wheelsets',
+            brand: 'DT Swiss',
+            rating: 4.9,
+            image: 'https://images.unsplash.com/photo-1605719124117-0406238b5994?auto=format&fit=crop&w=900&q=80',
+            description: 'Tubeless-ready carbon wheels with 45 mm rims designed for fast endurance rides and crosswinds.'
+        },
+        {
+            id: 'brk-001',
+            name: 'SRAM G2 RSC Disc Brake Set',
+            price: 289.5,
+            category: 'Brakes',
+            brand: 'SRAM',
+            rating: 4.6,
+            image: 'https://images.unsplash.com/photo-1517840545246-b491010a9e11?auto=format&fit=crop&w=900&q=80',
+            description: 'Four-piston trail brakes featuring contact point adjustment and SwingLink lever feel.'
+        },
+        {
+            id: 'sus-001',
+            name: 'Fox Factory 34 Step-Cast Fork',
+            price: 969.0,
+            category: 'Suspension',
+            brand: 'Fox',
+            rating: 4.9,
+            image: 'https://images.unsplash.com/photo-1541544741938-0af808871cc1?auto=format&fit=crop&w=900&q=80',
+            description: '120 mm travel XC fork with FIT4 damper, Kashima coating, and lightweight Step-Cast chassis.'
+        },
+        {
+            id: 'sat-001',
+            name: 'Specialized Power Expert Saddle',
+            price: 159.99,
+            category: 'Contact Points',
+            brand: 'Specialized',
+            rating: 4.5,
+            image: 'https://images.unsplash.com/photo-1595433707802-8f4b64d45e85?auto=format&fit=crop&w=900&q=80',
+            description: 'Short-nose saddle with Body Geometry cutout to support aggressive road and gravel positions.'
+        },
+        {
+            id: 'lit-001',
+            name: 'Bontrager Ion Elite R Front Light',
+            price: 119.99,
+            category: 'Lighting',
+            brand: 'Bontrager',
+            rating: 4.4,
+            image: 'https://images.unsplash.com/photo-1517003211561-e9f26837fef0?auto=format&fit=crop&w=900&q=80',
+            description: '1000-lumen USB-C rechargeable light with Daytime Running Mode for city commuting.'
+        },
+        {
+            id: 'ele-001',
+            name: 'Garmin Edge 840 Solar',
+            price: 549.99,
+            category: 'Electronics',
+            brand: 'Garmin',
+            rating: 4.8,
+            image: 'https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?auto=format&fit=crop&w=900&q=80',
+            description: 'Performance GPS computer with solar charging, ClimbPro, and multi-band GNSS accuracy.'
+        },
+        {
+            id: 'tls-001',
+            name: 'Park Tool AK-5 Advanced Mechanic Toolkit',
+            price: 319.95,
+            category: 'Tools',
+            brand: 'Park Tool',
+            rating: 4.9,
+            image: 'https://images.unsplash.com/photo-1595435905940-c6ef1debd5a5?auto=format&fit=crop&w=900&q=80',
+            description: 'A 40-piece kit covering essential shop-quality tools for drivetrain, wheel, and brake service.'
+        },
+        {
+            id: 'app-001',
+            name: 'Rapha Core Cycling Jersey',
+            price: 95.0,
+            category: 'Apparel',
+            brand: 'Rapha',
+            rating: 4.7,
+            image: 'https://images.unsplash.com/photo-1518655048521-f130df041f66?auto=format&fit=crop&w=900&q=80',
+            description: 'Breathable jersey with twin stripe detailing, optimized for everyday training miles.'
+        },
+        {
+            id: 'acc-001',
+            name: 'CamelBak Podium Chill 21oz Bottle',
+            price: 16.0,
+            category: 'Accessories',
+            brand: 'CamelBak',
+            rating: 4.3,
+            image: 'https://images.unsplash.com/photo-1600181952022-2bd5ead43a6c?auto=format&fit=crop&w=900&q=80',
+            description: 'Double-wall insulated cycling bottle with high-flow Jet Valve and secure lockout.'
+        },
+        {
+            id: 'tyr-001',
+            name: 'Maxxis Minion DHF 29x2.5 WT Tire',
+            price: 77.99,
+            category: 'Tires',
+            brand: 'Maxxis',
+            rating: 4.8,
+            image: 'https://images.unsplash.com/photo-1563453392212-326f5e854473?auto=format&fit=crop&w=900&q=80',
+            description: '3C MaxxTerra compound tire with EXO protection for confident enduro and trail grip.'
+        },
+        {
+            id: 'prn-001',
+            name: 'Elite Direto XR-T Smart Trainer',
+            price: 999.0,
+            category: 'Training',
+            brand: 'Elite',
+            rating: 4.6,
+            image: 'https://images.unsplash.com/photo-1595433562696-19f5c4f0b264?auto=format&fit=crop&w=900&q=80',
+            description: 'Direct-drive smart trainer with ±1.5% accuracy and 2300-watt sprint resistance for indoor sessions.'
+        }
+    ];
 
 async function apiFetch(path, options = {}) {
     const { method = 'GET', body = undefined, headers = {}, skipAuth = false } = options;
@@ -549,6 +570,17 @@ async function syncCart({ silent = false } = {}) {
 }
 
 async function loadProducts() {
+    let initialised = false;
+    if (bootstrapProducts.length) {
+        const bootstrapNormalized = bootstrapProducts
+            .map((entry, index) => normalizeProduct(entry, index))
+            .filter(Boolean);
+        if (bootstrapNormalized.length) {
+            state.products = bootstrapNormalized;
+            initialised = true;
+        }
+    }
+
     try {
         const payload = await apiFetch(API_PATHS.products, { method: 'GET' });
         const normalized = Array.isArray(payload)
@@ -561,15 +593,22 @@ async function loadProducts() {
 
         state.products = normalized;
     } catch (error) {
-        console.info('Falling back to inline product data.', error);
-        const normalizedFallback = fallbackProducts
-            .map((entry, index) => normalizeProduct(entry, index))
-            .filter(Boolean);
-        state.products = normalizedFallback.length ? normalizedFallback : fallbackProducts.slice();
+        if (!initialised) {
+            console.info('Falling back to inline product data.', error);
+            const normalizedFallback = fallbackProducts
+                .map((entry, index) => normalizeProduct(entry, index))
+                .filter(Boolean);
+            state.products = normalizedFallback.length ? normalizedFallback : fallbackProducts.slice();
+        }
     }
 }
 
 async function loadCategories() {
+    if (bootstrapCategories.length) {
+        state.categories = CATEGORY_CONFIG.slice();
+        return;
+    }
+
     try {
         const payload = await apiFetch(API_PATHS.categories, { method: 'GET' });
         if (Array.isArray(payload) && payload.length) {

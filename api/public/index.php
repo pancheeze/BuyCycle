@@ -17,11 +17,11 @@ use App\Router;
 use App\Services\AuthService;
 use App\Services\CartService;
 
-header('Content-Type: application/json');
+define('BUY_CYCLE_QUERY_ROUTE_PARAMS', ['route', 'path']);
 
 handleCors();
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
+if (($_SERVER['REQUEST_METHOD'] ?? '') === 'OPTIONS') {
     http_response_code(204);
     exit;
 }
@@ -57,15 +57,66 @@ $router->dispatch($request);
 function createRequest(): Request
 {
     $uri = parse_url($_SERVER['REQUEST_URI'] ?? '/', PHP_URL_PATH) ?: '/';
-    $path = rtrim($uri, '/') ?: '/';
+    $path = '/';
+
+    foreach (BUY_CYCLE_QUERY_ROUTE_PARAMS as $param) {
+        $candidate = $_GET[$param] ?? null;
+        if (is_string($candidate) && $candidate !== '') {
+            $path = '/' . ltrim($candidate, '/');
+            break;
+        }
+    }
+
+    if ($path === '/') {
+        $path = normalisePathFromUri($uri);
+    }
+
     $prefix = '/api';
     if ($prefix !== '/' && str_starts_with($path, $prefix)) {
         $path = substr($path, strlen($prefix));
-        $path = $path === '' ? '/' : $path;
+        if ($path === '' || $path === false) {
+            $path = '/';
+        } elseif ($path[0] !== '/') {
+            $path = '/' . $path;
+        }
     }
+
     $headers = getallheadersFallback();
     $rawBody = file_get_contents('php://input') ?: '';
-    return new Request($_SERVER['REQUEST_METHOD'] ?? 'GET', $path, $_GET, $headers, $rawBody);
+
+    $query = $_GET;
+    foreach (BUY_CYCLE_QUERY_ROUTE_PARAMS as $param) {
+        unset($query[$param]);
+    }
+
+    return new Request($_SERVER['REQUEST_METHOD'] ?? 'GET', $path, $query, $headers, $rawBody);
+}
+
+function normalisePathFromUri(string $uri): string
+{
+    $path = rtrim($uri, '/') ?: '/';
+
+    $scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+    $normalizedScript = $scriptName !== '' ? str_replace('\\', '/', $scriptName) : '';
+    $scriptDir = $normalizedScript !== '' ? rtrim(dirname($normalizedScript), '/') : '';
+
+    if ($normalizedScript !== '' && str_starts_with($path, $normalizedScript)) {
+        $path = substr($path, strlen($normalizedScript));
+    } elseif ($scriptDir !== '' && str_starts_with($path, $scriptDir)) {
+        $path = substr($path, strlen($scriptDir));
+    }
+
+    if ($path === '' || $path === false) {
+        return '/';
+    }
+
+    $path = $path[0] === '/' ? $path : '/' . $path;
+
+    if ($path !== '/' && str_ends_with($path, '/index.php')) {
+        $path = substr($path, 0, -10) ?: '/';
+    }
+
+    return $path === '' ? '/' : $path;
 }
 
 function registerRoutes(Router $router): void
@@ -79,17 +130,19 @@ function registerRoutes(Router $router): void
 function getallheadersFallback(): array
 {
     if (function_exists('getallheaders')) {
-        /** @var array $headers */
         $headers = getallheaders();
-        return $headers;
+        return is_array($headers) ? $headers : [];
     }
+
     $headers = [];
     foreach ($_SERVER as $key => $value) {
-        if (str_starts_with($key, 'HTTP_')) {
-            $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
-            $headers[$name] = $value;
+        if (!is_string($key) || !str_starts_with($key, 'HTTP_')) {
+            continue;
         }
+        $name = str_replace(' ', '-', ucwords(strtolower(str_replace('_', ' ', substr($key, 5)))));
+        $headers[$name] = $value;
     }
+
     return $headers;
 }
 
@@ -97,11 +150,13 @@ function handleCors(): void
 {
     $origin = $_SERVER['HTTP_ORIGIN'] ?? '*';
     $allowed = Config::getCorsOrigins();
-    if (empty($allowed) || ($origin !== '*' && in_array($origin, $allowed, true))) {
+
+    if (empty($allowed) || $origin === '*' || in_array($origin, $allowed, true)) {
         header('Access-Control-Allow-Origin: ' . ($origin === '*' ? '*' : $origin));
-    } else {
+    } elseif (!empty($allowed)) {
         header('Access-Control-Allow-Origin: ' . $allowed[0]);
     }
+
     header('Access-Control-Allow-Credentials: true');
     header('Access-Control-Allow-Headers: Content-Type, Authorization, X-Session-Id');
     header('Access-Control-Allow-Methods: GET, POST, PATCH, DELETE, OPTIONS');
