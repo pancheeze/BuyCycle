@@ -1,4 +1,52 @@
 <!DOCTYPE html>
+<?php
+require_once __DIR__ . '/api/bootstrap.php';
+
+use App\Database;
+
+function fetchRows(\PDO $pdo, string $query): array
+{
+    try {
+        $statement = $pdo->query($query);
+        return $statement !== false ? $statement->fetchAll() : [];
+    } catch (\Throwable) {
+        return [];
+    }
+}
+
+$pdo = Database::connection();
+
+$products = array_map(static function (array $row): array {
+    return [
+        'id' => (string) $row['product_id'],
+        'name' => $row['name'],
+        'brand' => $row['brand'],
+        'description' => $row['description'],
+        'price' => (float) $row['price'],
+        'rating' => $row['rating'] !== null ? (float) $row['rating'] : null,
+        'image' => $row['image_url'],
+        'category' => (string) $row['category_id']
+    ];
+}, fetchRows($pdo, 'SELECT product_id, name, brand, description, price, rating, image_url, category_id FROM products ORDER BY created_at DESC'));
+
+$categories = array_map(static function (array $row): array {
+    $value = (string) $row['category_id'];
+    $badgeSeed = $row['badge'] ?: substr($value, 0, 2);
+    return [
+        'value' => $value,
+        'label' => $row['label'],
+        'badge' => strtoupper(substr($badgeSeed, 0, 2)),
+        'product_count' => (int) $row['product_count'],
+        'display_order' => (int) $row['display_order']
+    ];
+}, fetchRows($pdo, 'SELECT category_id, label, badge, product_count, display_order FROM categories ORDER BY display_order ASC'));
+
+$scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+$host = $_SERVER['HTTP_HOST'] ?? 'localhost';
+$scriptName = $_SERVER['SCRIPT_NAME'] ?? '';
+$basePrefix = rtrim(dirname($scriptName), '/\\');
+$apiBaseUrl = $scheme . '://' . $host . ($basePrefix === '' ? '' : $basePrefix) . '/api/public/index.php?route=';
+?>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +54,7 @@
     <title>BuyCycle | Premium Bicycle Components & Parts</title>
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
-<body data-authenticated="false" data-api-base="api/public/index.php?route=">
+<body data-authenticated="false" data-api-base="<?php echo htmlspecialchars($apiBaseUrl, ENT_QUOTES); ?>">
     <div class="auth-gate" data-auth-gate>
         <div class="auth-gate-card" role="dialog" aria-labelledby="authGateHeading" aria-modal="true">
             <div class="auth-gate-branding">
@@ -171,6 +219,16 @@
     <footer class="site-footer">
         <p>&copy; <span data-current-year></span> BuyCycle. All rights reserved.</p>
     </footer>
+
+    <script>
+        window.buycycleBootstrap = <?php echo json_encode(
+            [
+                'products' => $products,
+                'categories' => $categories
+            ],
+            JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE
+        ); ?>;
+    </script>
 
     <script src="assets/js/app.js" defer></script>
 </body>
