@@ -54,8 +54,7 @@ final class AuthService
             throw new Exception('Email already registered.');
         }
 
-        $hash = password_hash($password, PASSWORD_BCRYPT);
-        $user = $this->users->create($email, $fullName, $phone, $hash);
+        $user = $this->users->create($email, $fullName, $phone, $password);
         $this->carts->mergeGuestCart($sessionId, (int) $user['user_id']);
         $token = $this->issueToken((int) $user['user_id'], $email);
 
@@ -73,7 +72,8 @@ final class AuthService
             throw new Exception('email and password are required.');
         }
         $user = $this->users->findByEmail($email);
-        if (!$user || !password_verify($password, $user['password_hash'] ?? '')) {
+        $storedPassword = (string) ($user['password_hash'] ?? '');
+        if (!$user || !hash_equals($storedPassword, $password)) {
             throw new Exception('Invalid credentials.');
         }
         $this->users->updateLastLogin((int) $user['user_id']);
